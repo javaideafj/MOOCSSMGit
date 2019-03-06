@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qfedu.mapper.DocumentDao">
+
+    <resultMap id="userInfoPro" type="userInfo">
+        <id property="username" column="username"></id>
+        <result property="nickname" column="nickname"></result>
+
+    </resultMap>
+
+    <resultMap id="classifyPro" type="classify">
+        <id property="id" column="id"></id>
+        <result property="bigName" column="bigName"></result>
+        <result property="smallName" column="smallName"></result>
+    </resultMap>
+
+    <resultMap id="documentPro" type="document">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="keyle" column="keyle"></result>
+        <result property="url" column="url"></result>
+        <result property="summary" column="summary"></result>
+        <result property="uploadDate" column="uploadDate"></result>
+
+        <association property="kind" column="kind" javaType="classify" resultMap="classifyPro"></association>
+        <association property="uploadUser" column="uploadUser" javaType="userInfo"
+                     resultMap="userInfoPro"></association>
+    </resultMap>
+
+    <select id="selectAllDocument" resultMap="documentPro">
+    select d.*,c.bigName,c.smallName,u.* from document d, userInfo u,classify c where d.uploadUser = u.username and d.kind = c.id
+</select>
+
+    <!--<delete id="deleteDocumentById" parameterType=""></delete>-->
+
+</mapper>
